@@ -2,6 +2,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(wesnoth)
+set(CMAKE_XCODE_GENERATE_SCHEME TRUE)
 
 include(CheckCXXCompilerFlag)
 
@@ -75,8 +76,16 @@ find_package(ICU REQUIRED COMPONENTS data i18n uc)
 
 # no, gettext executables are not required when NLS is deactivated
 find_package(Gettext)
-
 find_package(X11)
+
+if(APPLE)
+	find_package(BZip2 REQUIRED)
+	find_package(ZLIB REQUIRED)
+	find_package(Iconv REQUIRED)
+	find_package(Intl REQUIRED)
+	find_package(Ogg CONFIG REQUIRED)
+	find_package(Vorbis CONFIG REQUIRED)
+endif()
 
 if(NOT WIN32)
 	# Use the safer `mkstemp' instead of `tmpnam' on POSIX systems.
@@ -470,7 +479,7 @@ if(ENABLE_GAME OR ENABLE_TESTS)
 	find_package(VorbisFile REQUIRED)
 	find_package(PkgConfig REQUIRED)
 	find_package(Fontconfig REQUIRED)
-	if(NOT MSVC)
+	if(NOT MSVC AND NOT APPLE)
 		# for everything else, use pkgconfig
 		# find_package can't be used for SDL2 since at least as of Ubuntu 20.04 they forgot to include the sdl2-config-version.cmake, so cmake can't tell if it's >= 2.0.8 and thus rejects using it
 		# meanwhile SDL2_image and SDL2_mixer don't seem to have any cmake configuration available at all

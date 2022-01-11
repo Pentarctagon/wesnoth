@@ -19,6 +19,7 @@
     "fontconfig",
     "libvorbis",
     "libogg",
+    "openssl",
     "boost-filesystem",
     "boost-iostreams",
     {
@@ -46,3 +47,4 @@
     "boost-test"
   ]
 }
+

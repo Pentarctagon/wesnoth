@@ -23,10 +23,6 @@ if(NOT MSVC)
 	include_directories(SYSTEM ${SDL2MIXER_INCLUDE_DIRS})
 endif()
 
-if(ZLIB_INCLUDE_DIR)
-	include_directories(SYSTEM ${ZLIB_INCLUDE_DIR} )
-endif()
-
 # needed to get include paths in the subfolders correct
 include_directories( ${CMAKE_SOURCE_DIR}/src/ )
 # needed to have the generated config.h used, too
@@ -192,7 +188,7 @@ if(ENABLE_GAME)
 		Boost::filesystem
 		Fontconfig::Fontconfig
 	)
-	if(MSVC)
+	if(MSVC OR APPLE)
 		target_link_libraries(wesnoth SDL2::SDL2)
 		target_link_libraries(wesnoth SDL2::SDL2main)
 		target_link_libraries(wesnoth SDL2::SDL2_image)
@@ -203,9 +199,19 @@ if(ENABLE_GAME)
 		add_dependencies(wesnoth wesnoth-revision)
 	endif()
 
-	set_target_properties(wesnoth PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}wesnoth${BINARY_SUFFIX})
+	if(APPLE)
+		target_link_libraries(wesnoth Ogg::ogg)
+		target_link_libraries(wesnoth Vorbis::vorbisfile)
+		target_link_libraries(wesnoth Intl::Intl)
 
-	install(TARGETS wesnoth DESTINATION ${CMAKE_INSTALL_BINDIR})
+		set_target_properties(wesnoth
+			PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}wesnoth${BINARY_SUFFIX}
+			MACOSX_BUNDLE TRUE
+			MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../projectfiles/Xcode/Info.plist
+		)
+	else()
+		install(TARGETS wesnoth DESTINATION ${CMAKE_INSTALL_BINDIR})
+	endif()
 endif()
 
 ########### Boost Unit tests ###############
@@ -240,11 +246,17 @@ if(ENABLE_TESTS)
 		Boost::unit_test_framework
 		Fontconfig::Fontconfig
 	)
-	if(MSVC)
+	if(MSVC OR APPLE)
 		target_link_libraries(boost_unit_tests SDL2::SDL2)
 		target_link_libraries(boost_unit_tests SDL2::SDL2main)
 		target_link_libraries(boost_unit_tests SDL2::SDL2_image)
 		target_link_libraries(boost_unit_tests SDL2::SDL2_mixer)
+	endif()
+
+	if(APPLE)
+		target_link_libraries(wesnoth Ogg::ogg)
+		target_link_libraries(wesnoth Vorbis::vorbisfile)
+		target_link_libraries(wesnoth Intl::Intl)
 	endif()
 
 	if(ENABLE_DISPLAY_REVISION)
@@ -291,6 +303,12 @@ if(ENABLE_SERVER)
 		target_link_options(wesnothd PRIVATE /WX)
 	endif()
 
+	if(APPLE)
+		target_link_libraries(wesnoth BZip2::BZip2)
+		target_link_libraries(wesnoth ZLIB::ZLIB)
+		target_link_libraries(wesnoth Iconv::Iconv)
+	endif()
+
 	set_target_properties(wesnothd PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}wesnothd${BINARY_SUFFIX})
 	if(ENABLE_DISPLAY_REVISION)
 		add_dependencies(wesnothd wesnoth-revision)
@@ -331,6 +349,12 @@ if(ENABLE_CAMPAIGN_SERVER)
 	)
 	if(MSVC)
 		target_link_options(campaignd PRIVATE /WX)
+	endif()
+
+	if(APPLE)
+		target_link_libraries(wesnoth BZip2::BZip2)
+		target_link_libraries(wesnoth ZLIB::ZLIB)
+		target_link_libraries(wesnoth Iconv::Iconv)
 	endif()
 
 	set_target_properties(campaignd PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}campaignd${BINARY_SUFFIX})
