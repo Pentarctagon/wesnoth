@@ -23,10 +23,6 @@ if(NOT MSVC)
 	include_directories(SYSTEM ${SDL2MIXER_INCLUDE_DIRS})
 endif()
 
-if(ZLIB_INCLUDE_DIR)
-	include_directories(SYSTEM ${ZLIB_INCLUDE_DIR} )
-endif()
-
 # needed to get include paths in the subfolders correct
 include_directories( ${CMAKE_SOURCE_DIR}/src/ )
 # needed to have the generated config.h used, too
@@ -191,8 +187,11 @@ if(ENABLE_GAME)
 		Boost::locale
 		Boost::filesystem
 		Fontconfig::Fontconfig
+		Ogg::ogg
+		Vorbis::vorbisfile
+		Intl::Intl
 	)
-	if(MSVC)
+	if(MSVC OR APPLE)
 		target_link_libraries(wesnoth SDL2::SDL2)
 		target_link_libraries(wesnoth SDL2::SDL2main)
 		target_link_libraries(wesnoth SDL2::SDL2_image)
@@ -203,9 +202,25 @@ if(ENABLE_GAME)
 		add_dependencies(wesnoth wesnoth-revision)
 	endif()
 
-	set_target_properties(wesnoth PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}wesnoth${BINARY_SUFFIX})
+	set_target_properties(wesnoth
+		PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}wesnoth${BINARY_SUFFIX}
+		MACOSX_BUNDLE TRUE
+		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../projectfiles/Xcode/Info.plist
+	)
 
-	install(TARGETS wesnoth DESTINATION ${CMAKE_INSTALL_BINDIR})
+#	add_custom_command(TARGET wesnoth POST_BUILD COMMAND echo MMMMMMMMMMMMMMMMMMMMMMMMM COMMENT "AAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+#	add_custom_command(TARGET wesnoth
+#		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+#		${CMAKE_CURRENT_SOURCE_DIR}/../data
+#		${CMAKE_CURRENT_SOURCE_DIR}/../fonts
+#		${CMAKE_CURRENT_SOURCE_DIR}/../images
+#		${CMAKE_CURRENT_SOURCE_DIR}/../sounds
+#		${CMAKE_CURRENT_SOURCE_DIR}/../translations
+#		${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_BUILD_TYPE}/wesnoth.app/Contents/MacOS/Resources
+#	)
+
+	# install(TARGETS wesnoth DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 ########### Boost Unit tests ###############
@@ -239,8 +254,11 @@ if(ENABLE_TESTS)
 		Boost::filesystem
 		Boost::unit_test_framework
 		Fontconfig::Fontconfig
+		Ogg::ogg
+		Vorbis::vorbisfile
+		Intl::Intl
 	)
-	if(MSVC)
+	if(MSVC OR APPLE)
 		target_link_libraries(boost_unit_tests SDL2::SDL2)
 		target_link_libraries(boost_unit_tests SDL2::SDL2main)
 		target_link_libraries(boost_unit_tests SDL2::SDL2_image)
@@ -286,6 +304,9 @@ if(ENABLE_SERVER)
 		Boost::coroutine
 		Boost::locale
 		Boost::filesystem
+		BZip2::BZip2
+		ZLIB::ZLIB
+		Iconv::Iconv
 	)
 	if(MSVC)
 		target_link_options(wesnothd PRIVATE /WX)
@@ -328,6 +349,9 @@ if(ENABLE_CAMPAIGN_SERVER)
 		Boost::coroutine
 		Boost::locale
 		Boost::filesystem
+		BZip2::BZip2
+		ZLIB::ZLIB
+		Iconv::Iconv
 	)
 	if(MSVC)
 		target_link_options(campaignd PRIVATE /WX)
