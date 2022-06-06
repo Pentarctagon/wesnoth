@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/windows:20H2-amd64
+
+RUN winget install -e --id Git.Git
+RUN winget install -e --id Kitware.CMake
+RUN winget install -e --id Microsoft.VisualStudio.2019.Community
+
+RUN git clone https://github.com/microsoft/vcpkg.git vcpkg
+RUN cd vcpkg
+RUN git checkout 01d6f6ff1e5332b926099f0c23bda996940ad4e8
+RUN bootstrap-vcpkg.bat
