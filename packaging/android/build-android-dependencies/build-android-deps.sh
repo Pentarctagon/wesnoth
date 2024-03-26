@@ -15,12 +15,12 @@ https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.14.2.tar.xz
 https://www.cairographics.org/releases/cairo-1.16.0.tar.xz
 https://github.com/harfbuzz/harfbuzz/releases/download/7.1.0/harfbuzz-7.1.0.tar.xz
 https://download.gnome.org/sources/pango/1.50/pango-1.50.14.tar.xz
-https://github.com/libsdl-org/SDL/releases/download/release-2.30.12/SDL2-2.30.12.tar.gz
+https://github.com/libsdl-org/SDL/archive/refs/tags/release-3.4.2.tar.gz
 https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.4.0.tar.gz
-https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.gz
+https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-3.4.0.tar.gz
+https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-3.2.0.tar.gz
 https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz
 https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.7.tar.xz
-https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.3/SDL2_mixer-2.6.3.tar.gz
 https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
 https://www.openssl.org/source/openssl-3.4.1.tar.gz
 https://curl.se/download/curl-8.1.1.tar.xz
@@ -58,16 +58,16 @@ do
 			patch=$ORIGIN/${package%-*}.autotools.patch
 			pushd $package
 			patch -p1 -i $patch
-			if [[ $package == *"SDL2"* ]]
+			if [[ $package == *"SDL3"* ]]
 			then
 				./autogen.sh
 				if [ -f android-project/app/jni/Android.mk ]
 				then
-					mkdir -p ../SDL2-ndk-build/jni
-					cp android-project/app/jni/Android.mk ../SDL2-ndk-build/jni/
-					cp android-project/app/jni/Application.mk ../SDL2-ndk-build/jni/
+					mkdir -p ../SDL3-ndk-build/jni
+					cp android-project/app/jni/Android.mk ../SDL3-ndk-build/jni/
+					cp android-project/app/jni/Application.mk ../SDL3-ndk-build/jni/
 				fi
-				ln -sf ../../$package ../SDL2-ndk-build/jni/${package%-*}
+				ln -sf ../../$package ../SDL3-ndk-build/jni/${package%-*}
 			else
 				autoreconf
 			fi
@@ -176,9 +176,9 @@ do
 done
 
 
-cd $BUILDDIR/src/SDL2-ndk-build
+cd $BUILDDIR/src/SDL3-ndk-build
 webpPath=($BUILDDIR/src/libwebp-*)
-sdl_imagePath=($BUILDDIR/src/SDL2_image-*)
+sdl_imagePath=($BUILDDIR/src/SDL3_image-*)
 ln -sf $webpPath $sdl_imagePath/external/libwebp
 $NDK/ndk-build SUPPORT_WEBP=true APP_ABI="$ARCHS"
 for lib in libs/*/*.so

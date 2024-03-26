@@ -4,13 +4,10 @@
   "version": "0.0.1",
   "builtin-baseline": "d90a9b159c08169f39adcd1b0f1ac0ca12c4b96c",
   "dependencies": [
-    "sdl2",
-    {
-      "name": "sdl2-image",
-      "features": [ "libjpeg-turbo", "libwebp" ]
-    },
+    "sdl3",
+    "sdl3-image",
     "libwebp",
-    "sdl2-mixer",
+    "sdl3-mixer",
     "bzip2",
     "zlib",
     "pango",
