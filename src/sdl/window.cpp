@@ -74,8 +74,6 @@ window::window(const std::string& title,
 	// Minimizing was reported as bug #1606 with blocker priority.
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 
-	pixel_format_ = info.texture_formats[0];
-
 	fill(0,0,0);
 
 	render();

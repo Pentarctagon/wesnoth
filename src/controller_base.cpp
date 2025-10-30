@@ -82,7 +82,7 @@ void controller_base::long_touch_callback(int x, int y)
 		if(!yes_actually_dragging
 		   && (mouse_state & SDL_BUTTON_MASK(SDL_BUTTON_LEFT)) != 0)
 		{
-			show_menu(get_display().get_theme().context_menu(), { x_now, y_now }, true);
+			show_menu(get_display().get_theme().context_menu(), { static_cast<int>(x_now), static_cast<int>(y_now) }, true);
 		}
 	}
 
@@ -200,7 +200,7 @@ void controller_base::handle_event(const SDL_Event& event)
 
 		mh_base.mouse_press(event.button, is_browsing());
 		if(mh_base.get_show_menu()) {
-			show_menu(get_display().get_theme().context_menu(), { event.button.x, event.button.y }, true);
+			show_menu(get_display().get_theme().context_menu(), { static_cast<int>(event.button.x), static_cast<int>(event.button.y) }, true);
 		}
 		break;
 
@@ -225,8 +225,6 @@ void controller_base::handle_event(const SDL_Event& event)
 		gui2::execute_timer(reinterpret_cast<std::size_t>(event.user.data1));
 		break;
 
-	// TODO: Support finger specifically, like pan the map. For now, SDL's "shadow mouse" events will do.
-	case SDL_MULTIGESTURE:
 	default:
 		break;
 	}

@@ -216,7 +216,7 @@ void draw::line(int from_x, int from_y, int to_x, int to_y, const color_t& c)
 	SDL_RenderLine(renderer(), from_x, from_y, to_x, to_y);
 }
 
-void draw::points(const std::vector<::point>& points)
+void draw::points(const std::vector<SDL_FPoint>& points)
 {
 	// We cannot decay vector<point> to SDL_Point* unless the two types are the same size.
 	static_assert(sizeof(::point) == sizeof(SDL_Point));
@@ -249,27 +249,26 @@ void draw::circle(int cx, int cy, int r, uint8_t octants)
 	int x = r;
 	int y = 0;
 
-	std::vector<::point> points;
+	std::vector<SDL_FPoint> points;
 
-		if(octants & 0x08) {
-			points.push_back({static_cast<float>(cx + y), static_cast<float>(cy + x)});
-		}
-		if(octants & 0x01) {
-			points.push_back({static_cast<float>(cx + y), static_cast<float>(cy - x)});
-		}
-		if(octants & 0x10) {
-			points.push_back({static_cast<float>(cx - y), static_cast<float>(cy + x)});
-		}
-		if(octants & 0x80) {
-			points.push_back({static_cast<float>(cx - y), static_cast<float>(cy - x)});
-		}
+	if(octants & 0x08) {
+		points.push_back({static_cast<float>(cx + y), static_cast<float>(cy + x)});
+	}
+	if(octants & 0x01) {
+		points.push_back({static_cast<float>(cx + y), static_cast<float>(cy - x)});
+	}
+	if(octants & 0x10) {
+		points.push_back({static_cast<float>(cx - y), static_cast<float>(cy + x)});
+	}
+	if(octants & 0x80) {
+		points.push_back({static_cast<float>(cx - y), static_cast<float>(cy - x)});
+	}
 
-		d += 2 * y + 1;
-		++y;
-		if(d > 0) {
-			d += -2 * x + 2;
-			--x;
-		}
+	d += 2 * y + 1;
+	++y;
+	if(d > 0) {
+		d += -2 * x + 2;
+		--x;
 	}
 
 	draw::points(points);

@@ -153,7 +153,7 @@ hotkey_ptr create_hotkey(const std::string& id, const SDL_Event& event)
 		}
 	} break;
 
-	case SDL_MOUSEBUTTONUP: {
+	case SDL_EVENT_MOUSE_BUTTON_UP: {
 		auto mouse = std::make_shared<hotkey_mouse>();
 		base = std::dynamic_pointer_cast<hotkey_base>(mouse);
 		mouse->set_button(event.button.button);

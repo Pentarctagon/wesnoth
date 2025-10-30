@@ -189,7 +189,7 @@ bool update_test_framebuffer()
 		LOG_DP << "creating offscreen render texture";
 		render_texture_.assign(SDL_CreateTexture(
 			*window,
-			window->pixel_format(),
+			SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_TARGET,
 			test_resolution_.x, test_resolution_.y
 		));
@@ -387,9 +387,6 @@ void init_window(bool hidden)
 
 		SDL_SetWindowFullscreenMode(*window, &mode);
 	}
-
-	// Initialize window
-	window.reset(new sdl::window("", x, y, w, h, window_flags, renderer_flags));
 
 	// It is assumed that this function is only ever called once.
 	// If that is no longer true, then you should clean things up.

@@ -187,7 +187,7 @@ void mouse_handler_base::mouse_press(const SDL_MouseButtonEvent& event, const bo
 			if (!mouse_button_event(event, SDL_BUTTON_LEFT, loc, true)) {
 				left_click(event.x, event.y, browse);
 			}
-		} else if(event.sdown == false) {
+		} else if(event.down == false) {
 			minimap_scrolling_ = false;
 
 			if (!dragging_started_ && touch_timestamp != std::chrono::steady_clock::time_point{}) {

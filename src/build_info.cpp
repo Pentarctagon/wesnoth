@@ -199,7 +199,7 @@ version_table_manager::version_table_manager()
 
 	compiled[LIB_SDL_MIXER] = format_version(SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_MICRO_VERSION);
 
-	int linked_mix_version = Mix_Version();
+	int linked_mix_version = MIX_Version();
 	linked[LIB_SDL_MIXER] = format_version(SDL_VERSIONNUM_MAJOR(linked_mix_version), SDL_VERSIONNUM_MINOR(linked_mix_version), SDL_VERSIONNUM_MICRO(linked_mix_version));
 
 	names[LIB_SDL_MIXER] = "SDL_mixer";

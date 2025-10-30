@@ -476,23 +476,6 @@ void sdl_event_handler::handle_event(const SDL_Event& event)
 			}
 			break;
 
-		case SDL_MULTIGESTURE:
-			{
-				point c = video::game_canvas_size();
-				touch_multi_gesture(
-					point(event.mgesture.x * c.x, event.mgesture.y * c.y),
-					event.mgesture.dTheta, event.mgesture.dDist,
-					event.mgesture.numFingers
-				);
-			}
-			break;
-
-#if(defined(_X11) && !defined(__APPLE__)) || defined(_WIN32)
-		case SDL_SYSWMEVENT:
-			/* DO NOTHING */
-			break;
-#endif
-
 		// Silently ignored events.
 		case SDL_EVENT_KEY_UP:
 			break;
