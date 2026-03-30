@@ -40,39 +40,51 @@ export PREFIXDIR
 
 mkdir -p $BUILDDIR/src
 pushd $BUILDDIR/src
+
 for url in ${SOURCES[@]}
 do
 	wget -nc $url -P $DOWNLOADDIR
 	archive=`basename $url`
 	package=${archive%.*.*}
+	
 	if [ ! -d $package ]
 	then
 		tar -xf $DOWNLOADDIR/$archive
+		
 		if [ -f $ORIGIN/${package%-*}.patch ]
 		then
 			patch=$ORIGIN/${package%-*}.patch
 			patch -d $package -p1 -i $patch
 		fi
+		
+		pushd $package
+		
 		if [ -f $ORIGIN/${package%-*}.autotools.patch ]
 		then
 			patch=$ORIGIN/${package%-*}.autotools.patch
-			pushd $package
 			patch -p1 -i $patch
-			if [[ $package == *"SDL3"* ]]
+			
+			if [[ $package != *"SDL3"* ]]
 			then
-				./autogen.sh
-				if [ -f android-project/app/jni/Android.mk ]
-				then
-					mkdir -p ../SDL3-ndk-build/jni
-					cp android-project/app/jni/Android.mk ../SDL3-ndk-build/jni/
-					cp android-project/app/jni/Application.mk ../SDL3-ndk-build/jni/
-				fi
-				ln -sf ../../$package ../SDL3-ndk-build/jni/${package%-*}
-			else
 				autoreconf
 			fi
-			popd
 		fi
+		
+		if [[ $package == *"SDL3"* ]]
+		then
+			./autogen.sh
+			
+			if [ -f android-project/app/jni/Android.mk ]
+			then
+				mkdir -p ../SDL3-ndk-build/jni
+				cp android-project/app/jni/Android.mk ../SDL3-ndk-build/jni/
+				cp android-project/app/jni/Application.mk ../SDL3-ndk-build/jni/
+			fi
+			
+			ln -sf ../../$package ../SDL3-ndk-build/jni/${package%-*}
+		fi
+		
+		popd
 	fi
 
 	PACKAGES+=($package)
