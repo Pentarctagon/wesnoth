@@ -15,10 +15,10 @@ https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.14.2.tar.xz
 https://www.cairographics.org/releases/cairo-1.16.0.tar.xz
 https://github.com/harfbuzz/harfbuzz/releases/download/7.1.0/harfbuzz-7.1.0.tar.xz
 https://download.gnome.org/sources/pango/1.50/pango-1.50.14.tar.xz
-https://github.com/libsdl-org/SDL/archive/refs/tags/release-3.4.2.tar.gz
 https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.4.0.tar.gz
-https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-3.4.0.tar.gz
-https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-3.2.0.tar.gz
+https://github.com/libsdl-org/SDL/releases/download/release-3.4.2/SDL3-3.4.2.tar.gz
+https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.0/SDL3_image-3.4.0.tar.gz
+https://github.com/libsdl-org/SDL_mixer/releases/download/release-3.2.0/SDL3_mixer-3.2.0.tar.gz
 https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz
 https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.7.tar.xz
 https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
