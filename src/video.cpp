@@ -684,7 +684,14 @@ SDL_Renderer* get_renderer()
 
 SDL_Window* get_window()
 {
-	return *window;
+	if(window)
+	{
+		return *window;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 std::string current_driver()
