@@ -112,9 +112,11 @@
       {
          "name":"wesnoth",
          "buildsystem":"simple",
-         "append-pkg-config-path": "/app/lib64/pkgconfig",
+         "build-options": {
+            "append-pkg-config-path": "/app/lib64/pkgconfig"
+         },
          "build-commands":[
-            "PKG_CONFIG_PATH=\"$PKG_CONFIG_PATH:/app/lib64/pkgconfig\" python3 /app/bin/scons -j $FLATPAK_BUILDER_N_JOBS prefix=/app sdldir=/app enable_lto=true ccache=true --debug=time install wesnoth wesnothd"
+            "python3 /app/bin/scons -j $FLATPAK_BUILDER_N_JOBS prefix=/app sdldir=/app enable_lto=true ccache=true --debug=time install wesnoth wesnothd"
          ],
          "sources":[
             {
