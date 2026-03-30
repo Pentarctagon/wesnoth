@@ -72,7 +72,10 @@ do
 		
 		if [[ $package == *"SDL3"* ]]
 		then
-			./autogen.sh
+			mkdir build
+			cmake -S . -B ./build
+			cmake --build build
+			cmake --install build
 			
 			if [ -f android-project/app/jni/Android.mk ]
 			then
