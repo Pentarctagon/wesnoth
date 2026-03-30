@@ -1032,10 +1032,6 @@ int main(int argc, char** argv)
 
 		// declare this here so that it will always be at the front of the event queue.
 		events::event_context global_context;
-
-#if !defined(__ANDROID__) && !defined(__IPHONEOS__)
-		SDL_StartTextInput();
-#endif
 		const int res = do_gameloop(cmdline_opts);
 		safe_exit(res);
 	} catch(const boost::program_options::error& e) {
