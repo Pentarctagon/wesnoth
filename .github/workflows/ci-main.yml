@@ -207,7 +207,7 @@ jobs:
   flatpak:
     runs-on: ubuntu-latest
     container:
-      image: wesnoth/wesnoth:flatpak-sdl3
+      image: wesnoth/wesnoth:flatpak-master
       options: --tty --cap-add=ALL --privileged # docker create options
 
     steps:
