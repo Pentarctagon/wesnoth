@@ -5,7 +5,10 @@
   "builtin-baseline": "d90a9b159c08169f39adcd1b0f1ac0ca12c4b96c",
   "dependencies": [
     "sdl3",
-    "sdl3-image",
+    {
+      "name": "sdl2-image",
+      "features": [ "jpeg", "png", "webp" ]
+    },
     "libwebp",
     "sdl3-mixer",
     "bzip2",
