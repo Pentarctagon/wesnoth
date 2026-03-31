@@ -366,6 +366,9 @@ static surface load_image_file(const image::locator& loc)
 			}
 
 			res = IMG_Load(location.value().c_str());
+			if(!res) {
+				ERR_IMG << "Failed to load image with reason: " << SDL_GetError();
+			}
 
 			// If there was no standalone localized image, check if there is an overlay.
 			if(res && !loc_location) {
