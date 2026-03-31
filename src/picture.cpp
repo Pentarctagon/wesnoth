@@ -327,7 +327,8 @@ bool locator::operator<(const locator& a) const
 // Load overlay image and compose it with the original surface.
 static void add_localized_overlay(const std::string& ovr_file, surface& orig_surf)
 {
-	surface ovr_surf = IMG_Load_IO(SDL_IOFromFile(ovr_file.c_str(), "rb"), true);
+	SDL_IOStream* stream = SDL_IOFromFile(ovr_file.c_str(), "rb");
+	surface ovr_surf = IMG_Load_IO(stream, true);
 	if(!ovr_surf) {
 		return;
 	}
@@ -365,7 +366,8 @@ static surface load_image_file(const image::locator& loc)
 				location = loc_location.value();
 			}
 
-			res = IMG_Load_IO(SDL_IOFromFile(location.value().c_str(), "rb"), true);
+			SDL_IOStream* stream = SDL_IOFromFile(location.value().c_str(), "rb");
+			res = IMG_Load_IO(stream, true);
 
 			// If there was no standalone localized image, check if there is an overlay.
 			if(res && !loc_location) {
@@ -925,14 +927,16 @@ save_result save_image(const surface& surf, const std::string& filename)
 	if(boost::algorithm::ends_with(filename, ".jpeg") || boost::algorithm::ends_with(filename, ".jpg") || boost::algorithm::ends_with(filename, ".jpe")) {
 		LOG_IMG << "Writing a JPG image to " << filename;
 
-		const int err = IMG_SaveJPG_IO(surf, SDL_IOFromFile(filename.c_str(), "rb"), true, 75);
+		SDL_IOStream* stream = SDL_IOFromFile(filename.c_str(), "rb");
+		const int err = IMG_SaveJPG_IO(surf, stream, true, 75);
 		return err == 0 ? save_result::success : save_result::save_failed;
 	}
 
 	if(boost::algorithm::ends_with(filename, ".png")) {
 		LOG_IMG << "Writing a PNG image to " << filename;
 
-		const int err = IMG_SavePNG_IO(surf, SDL_IOFromFile(filename.c_str(), "rb"), true);
+		SDL_IOStream* stream = SDL_IOFromFile(filename.c_str(), "rb");
+		const int err = IMG_SavePNG_IO(surf, stream, true);
 		return err == 0 ? save_result::success : save_result::save_failed;
 	}
 
