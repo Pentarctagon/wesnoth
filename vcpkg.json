@@ -6,7 +6,7 @@
   "dependencies": [
     "sdl3",
     {
-      "name": "sdl2-image",
+      "name": "sdl3-image",
       "features": [ "jpeg", "png", "webp" ]
     },
     "libwebp",
