@@ -26,7 +26,10 @@ int main(int, char** argv)
         return (EXIT_FAILURE);
     }
 
-    MIX_Init();
+    if(!MIX_Init()) {
+        fprintf(stdout, "Cannot initialize SDL Mixer: %s\n", SDL_GetError());
+        return (EXIT_FAILURE);
+    }
 
     SDL_AudioSpec spec;
     spec.freq = 44100;
@@ -34,7 +37,7 @@ int main(int, char** argv)
     spec.channels = 2;
     MIX_Mixer* mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
     if (!mixer) {
-        fprintf(stdout, "Cannot initialize SDL Mixer: %s\n", SDL_GetError());
+        fprintf(stdout, "Cannot initialize audio device: %s\n", SDL_GetError());
         return (EXIT_FAILURE);
     }
 
@@ -60,5 +63,6 @@ int main(int, char** argv)
     fprintf(stdout, "Success\n");
     MIX_DestroyAudio(music);
     MIX_DestroyMixer(mixer);
+    MIX_Quit();
     return (EXIT_SUCCESS);
 }
