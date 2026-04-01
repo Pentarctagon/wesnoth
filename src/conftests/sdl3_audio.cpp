@@ -22,34 +22,43 @@
 int main(int, char** argv)
 {
     if (!SDL_Init(SDL_INIT_AUDIO)) {
-        fprintf(stdout, "Cannot initialize SDL Audio: %s\\n", SDL_GetError());
+        fprintf(stdout, "Cannot initialize SDL Audio: %s\n", SDL_GetError());
         return (EXIT_FAILURE);
     }
+
+    MIX_Init();
 
     SDL_AudioSpec spec;
     spec.freq = 44100;
-    spec.format = MIX_DEFAULT_FORMAT;
+    spec.format = SDL_AUDIO_S16;
     spec.channels = 2;
-    if (!Mix_OpenAudio(0, &spec)) {
-        fprintf(stdout, "Cannot initialize SDL Mixer: %s\\n", SDL_GetError());
+    MIX_Mixer* mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
+    if (!mixer) {
+        fprintf(stdout, "Cannot initialize SDL Mixer: %s\n", SDL_GetError());
         return (EXIT_FAILURE);
     }
 
-    if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG) {
-        fprintf(stdout, "Cannot initialize OGG codec: %s\\n", SDL_GetError());
-        Mix_CloseAudio();
+    int n = MIX_GetNumAudioDecoders();
+    bool found_vorbis = false;
+    for(int i = 0; i < n; i++) {
+        if(strcmp(MIX_GetAudioDecoder(i), "VORBIS") == 0) {
+            found_vorbis = true;
+	}
+    }
+    if(!found_vorbis) {
+        fprintf(stdout, "VORBIS codec not available\n");
         return (EXIT_FAILURE);
     }
 
-    Mix_Music* music = Mix_LoadMUS(argv[1]);
+    MIX_Audio* music = MIX_LoadAudio(mixer, argv[1], false);
     if (music == nullptr) {
-        fprintf(stdout, "Cannot load music file: %s\\n", SDL_GetError());
-        Mix_CloseAudio();
+        fprintf(stdout, "Cannot load music file: %s\n", SDL_GetError());
+        MIX_DestroyMixer(mixer);
         return (EXIT_FAILURE);
     }
 
-    fprintf(stdout, "Success\\n");
-    Mix_FreeMusic(music);
-    Mix_CloseAudio();
+    fprintf(stdout, "Success\n");
+    MIX_DestroyAudio(music);
+    MIX_DestroyMixer(mixer);
     return (EXIT_SUCCESS);
 }
