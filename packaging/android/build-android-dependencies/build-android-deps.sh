@@ -194,7 +194,7 @@ cd $BUILDDIR/src/SDL3-ndk-build
 webpPath=($BUILDDIR/src/libwebp-*)
 sdl_imagePath=($BUILDDIR/src/SDL3_image-*)
 ln -sf $webpPath $sdl_imagePath/external/libwebp
-$NDK/ndk-build V=1 SUPPORT_WEBP=true SUPPORT_WAVPACK=false SUPPORT_SAVE_WEBP=false APP_ABI="$ARCHS"
+$NDK/ndk-build -j1 V=1 SUPPORT_WEBP=true SUPPORT_WAVPACK=false SUPPORT_SAVE_WEBP=false APP_ABI="$ARCHS"
 for lib in libs/*/*.so
 do
 	instdir=$(basename $(dirname $lib))
