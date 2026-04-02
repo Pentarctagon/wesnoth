@@ -23,7 +23,8 @@ def CheckSDL3(context, require_version):
     if env["PLATFORM"] != "win32" or sys.platform == "msys":
         for foo_config in [
             "pkg-config --cflags --libs $PKG_CONFIG_FLAGS sdl3",
-            "sdl3-config --cflags --libs"
+            "sdl3-config --cflags --libs",
+            "echo -lSDL3"
             ]:
             try:
                 env.ParseConfig(foo_config)

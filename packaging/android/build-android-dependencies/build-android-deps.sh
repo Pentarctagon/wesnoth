@@ -72,11 +72,6 @@ do
 		
 		if [[ $package == *"SDL3"* ]]
 		then
-			mkdir build
-			cmake -S . -B ./build
-			cmake --build build
-			cmake --install build
-			
 			if [ -f android-project/app/jni/Android.mk ]
 			then
 				mkdir -p ../SDL3-ndk-build/jni
@@ -187,6 +182,10 @@ do
 			popd
 			continue
 		fi
+		if [[ $package == *"SDL3"* ]]
+		then
+			cp -r $src_dir/include/* $PREFIXDIR/$abi/include/
+		fi
 	done
 done
 
@@ -195,7 +194,7 @@ cd $BUILDDIR/src/SDL3-ndk-build
 webpPath=($BUILDDIR/src/libwebp-*)
 sdl_imagePath=($BUILDDIR/src/SDL3_image-*)
 ln -sf $webpPath $sdl_imagePath/external/libwebp
-$NDK/ndk-build SUPPORT_WEBP=true APP_ABI="$ARCHS"
+$NDK/ndk-build SUPPORT_WEBP=true SUPPORT_WAVPACK=false SUPPORT_SAVE_WEBP=false APP_ABI="$ARCHS"
 for lib in libs/*/*.so
 do
 	instdir=$(basename $(dirname $lib))
