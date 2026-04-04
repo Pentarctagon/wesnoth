@@ -762,7 +762,7 @@ void set_user_data_dir(std::string newprefdir)
 			newprefdir = "~/.wesnoth" + get_version_path_suffix();
 		}
 #elif defined(__ANDROID__)
-		newprefdir = SDL_AndroidGetExternalStoragePath();
+		newprefdir = SDL_GetAndroidExternalStoragePath();
 #else
 		const char* h = std::getenv("HOME");
 		std::string home = h ? h : "";
