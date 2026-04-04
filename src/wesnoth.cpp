@@ -443,11 +443,11 @@ static int process_command_args(commandline_options& cmdline_opts)
 		}
 	} else {
 #if defined(__ANDROID__) && !defined(WESNOTH_PATH)
-		if(const char* ext_path = SDL_AndroidGetExternalStoragePath()) {
+		if(const char* ext_path = SDL_GetAndroidExternalStoragePath()) {
 			game_config::path = ext_path + std::string("/gamedata");
 			PLAIN_LOG << "Determined game data directory: " << game_config::path;
 		} else {
-			PLAIN_LOG << "Cannot find game data directory, specify one with --data-dir. SDL_AndroidGetExternalStoragePath() failed: " << SDL_GetError();
+			PLAIN_LOG << "Cannot find game data directory, specify one with --data-dir. SDL_GetAndroidExternalStoragePath() failed: " << SDL_GetError();
 		}
 #endif
 		// if a pre-defined path does not exist this will empty it
