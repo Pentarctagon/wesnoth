@@ -68,6 +68,7 @@
 #endif // _MSC_VER
 
 #include <SDL3/SDL.h> // for SDL_Init, SDL_INIT_TIMER
+#include <SDL3/SDL_main.h> // Provides platform-specific entrypoint, if applicable
 
 #include <boost/program_options/errors.hpp>     // for error
 #include <boost/algorithm/string/predicate.hpp> // for checking cmdline options
@@ -100,10 +101,6 @@
 #include <windows.h>
 
 #endif // _WIN32
-
-#ifdef __ANDROID__
-#define main SDL_main
-#endif
 
 #ifdef DEBUG_WINDOW_LAYOUT_GRAPHS
 #include "gui/widgets/debug.hpp"
