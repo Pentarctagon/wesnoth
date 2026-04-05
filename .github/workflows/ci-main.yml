@@ -233,9 +233,6 @@ jobs:
         with:
           name: Flatpak-Bundle
           path: wesnoth.flatpak
-      - name: Print config.log
-        if: success() || failure()
-        run: cat build/config.log
 
   translations:
     runs-on: ubuntu-latest
