@@ -96,7 +96,7 @@ window::~window()
 void window::set_size(const int w, const int h)
 {
 #ifdef __ANDROID__
-	SDL_RenderSetLogicalSize(SDL_GetRenderer(window_), w, h);
+	SDL_SetRenderLogicalPresentation(SDL_GetRenderer(window_), w, h, SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
 	SDL_WarpMouseInWindow(window_, w / 2, h / 2);
 #else
 	SDL_SetWindowSize(window_, w, h);
@@ -107,7 +107,7 @@ point window::get_size()
 {
 	point res;
 #ifdef __ANDROID__
-	SDL_RenderGetLogicalSize(SDL_GetRenderer(window_), &res.x, &res.y);
+	SDL_GetRenderLogicalPresentation(SDL_GetRenderer(window_), &res.x, &res.y, nullptr);
 #else
 	SDL_GetWindowSize(*this, &res.x, &res.y);
 #endif
