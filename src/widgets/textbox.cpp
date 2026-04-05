@@ -25,6 +25,9 @@
 #include "sdl/rect.hpp"
 #include "serialization/string_utils.hpp"
 #include "sdl/input.hpp" // get_mouse_state
+#if defined(__ANDROID__) || defined(__IPHONEOS__)
+#include "video.hpp"
+#endif
 
 #include <SDL3/SDL_timer.h>
 
