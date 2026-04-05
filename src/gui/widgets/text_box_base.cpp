@@ -696,7 +696,7 @@ void text_box_base::signal_handler_lose_keyboard_focus(const event::ui_event eve
 {
 	DBG_GUI_E << LOG_HEADER << ' ' << event << ".";
 #if defined(__ANDROID__) || defined(__IPHONEOS__)
-	SDL_StopTextInput();
+	SDL_StopTextInput(video::get_window());
 #endif
 	set_state(ENABLED);
 }

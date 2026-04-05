@@ -21,6 +21,7 @@
 #include "font/standard_colors.hpp"
 #include "game_display.hpp"
 #include "preferences/preferences.hpp"
+#include "video.hpp"
 #include "log.hpp"
 
 #include <SDL3/SDL_keyboard.h>
@@ -56,7 +57,7 @@ void floating_textbox::close()
 
 #if defined(__ANDROID__) || defined(__IPHONEOS__)
 	// Hide onscreen keyboard
-	SDL_StopTextInput();
+	SDL_StopTextInput(video::get_window());
 #endif
 }
 
