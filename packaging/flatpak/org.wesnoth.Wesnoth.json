@@ -113,7 +113,7 @@
          "name":"wesnoth",
          "buildsystem":"simple",
          "build-options": {
-            "append-pkg-config-path": "/app/lib/extra-pkgconfig:/another/custom/path"
+            "append-pkg-config-path": "/app/lib/pkgconfig:/app/lib64/pkgconfig"
          },
          "build-commands":[
             "python3 /app/bin/scons -j $FLATPAK_BUILDER_N_JOBS prefix=/app enable_lto=true ccache=true --debug=time install wesnoth wesnothd"
