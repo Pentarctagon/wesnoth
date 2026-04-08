@@ -353,7 +353,6 @@ void init_window(bool hidden)
 {
 #ifdef __ANDROID__
 	prefs::get().set_fullscreen(true);
-	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengles");
 #endif
 #if defined(__APPLE__) && TARGET_OS_IPHONE
 	desktop::apple::install_keyboard_dismiss_toolbar();
@@ -372,10 +371,6 @@ void init_window(bool hidden)
 	if(prefs::get().maximized()) {
 		window_flags |= SDL_WINDOW_MAXIMIZED;
 	}
-
-#ifdef __ANDROID__
-	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengles");
-#endif
 
 	if(hidden) {
 		LOG_DP << "hiding main window";
