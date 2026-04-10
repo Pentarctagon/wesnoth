@@ -23,6 +23,9 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.content.pm.ActivityInfo;
 
 import androidx.core.content.FileProvider;
@@ -32,9 +35,43 @@ import org.libsdl.app.SDLActivity;
 public class WesnothActivity extends SDLActivity
 {
 
+	/**
+	 * Enforces immersive fullscreen on every focus gain.
+	 * Needed because system UI can reappear after notifications/dialogs.
+	 * API 30+: hides insets and extends content behind system bars.
+	 * API <30: uses legacy immersive sticky flags with layout flags to
+	 *           prevent gray padding where bars used to be.
+	 */
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// hide system bars, navigation buttons, insets
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+				getWindow().setDecorFitsSystemWindows(false);
+				getWindow().getInsetsController().hide(
+					WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars()
+				);
+				getWindow().getInsetsController().setSystemBarsBehavior(
+					WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+				);
+			} else {
+				getWindow().getDecorView().setSystemUiVisibility(
+					View.SYSTEM_UI_FLAG_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+				);
+			}
+		}
+	}
+
+	/** Enforce landscape orientation */
 	@Override
 	public void setOrientationBis(int w, int h, boolean resizable, String hint) {
-		super.mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		SDLActivity.mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	}
 
 	// Needs to be inside an activity so we can use `startActivity`.
