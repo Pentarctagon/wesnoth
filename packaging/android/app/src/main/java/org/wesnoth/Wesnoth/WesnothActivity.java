@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.util.Log;
+import android.content.pm.ActivityInfo;
 
 import androidx.core.content.FileProvider;
 
@@ -30,6 +31,11 @@ import org.libsdl.app.SDLActivity;
 
 public class WesnothActivity extends SDLActivity
 {
+
+	@Override
+	public void setOrientationBis(int w, int h, boolean resizable, String hint) {
+		super.mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+	}
 
 	// Needs to be inside an activity so we can use `startActivity`.
 	public void open(String url) {
