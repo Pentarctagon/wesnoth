@@ -17,23 +17,52 @@ package org.wesnoth.Wesnoth;
 
 import java.io.File;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.content.pm.ActivityInfo;
-
+import android.graphics.Rect;
 import androidx.core.content.FileProvider;
 
 import org.libsdl.app.SDLActivity;
 
 public class WesnothActivity extends SDLActivity
 {
+	public static String getFullscreenResolution(Activity activity) {
+		int w, h;
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			Rect bounds = activity.getWindowManager()
+					.getMaximumWindowMetrics().getBounds();
+			w = bounds.width();
+			h = bounds.height();
+		} else {
+			DisplayMetrics metrics = new DisplayMetrics();
+			activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+			w = metrics.widthPixels;
+			h = metrics.heightPixels;
+		}
+
+		return w + "x" + h;
+	}
+	
+	/**
+	 * FIXME For some reason SDL3 migration broke the resolution detection.
+	 * Workaround: calculate resolution in Java then pass it to Wesnoth.
+	 */
+	@Override
+	protected String[] getArguments() {
+		String resStr = "-r " + getFullscreenResolution(this);
+		return new String[] { resStr };
+	}
 
 	/**
 	 * Enforces immersive fullscreen on every focus gain.
