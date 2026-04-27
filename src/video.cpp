@@ -737,6 +737,11 @@ std::vector<point> get_available_resolutions(const bool include_current)
 {
 	std::vector<point> result;
 
+#ifdef __ANDROID__
+	result.push_back(prefs::get().resolution());
+	return result;
+#endif
+
 	if(!window) {
 		return result;
 	}
