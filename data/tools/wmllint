@@ -2423,8 +2423,8 @@ to be called on their own".format(filename, num))
                 # Doing a better job would require tokenizing to pick up the
                 # string boundaries. I'd do it, but AI0867 is already working
                 # on a parser-based wmllint.
-                if '{' in value and "+" not in value and value.find('{') > value.find("_"):
-                    print('"%s", line %d: macro reference in translatable string'\
+                if '{' in value and "+" not in value and value.find('{') > value.find("_") and not "# po" in lines[i-1]:
+                    print('"%s", line %d: macro reference in translatable string without po comment explaining it'\
                           % (filename, i+1))
             # Check correctness of translation marks and descriptions
             if key.startswith("{") or key.startswith("<") or key.startswith("("):
