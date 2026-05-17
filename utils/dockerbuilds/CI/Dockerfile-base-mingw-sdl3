@@ -4,9 +4,9 @@ RUN pacman -S --noconfirm scons mingw-w64-gcc pkg-config python-pefile expect ns
 
 RUN pacman-cross -S --noconfirm \
     mingw-w64-x86_64-boost \
-    mingw-w64-x86_64-SDL2 \
-    mingw-w64-x86_64-SDL2_image \
-    mingw-w64-x86_64-SDL2_mixer \
+    mingw-w64-x86_64-sdl3 \
+    mingw-w64-x86_64-sdl3-image \
+    mingw-w64-x86_64-sdl3-mixer \
     mingw-w64-x86_64-pango \
     mingw-w64-x86_64-curl-winssl
 
